@@ -1,4 +1,3 @@
-#![allow(dead_code, unused_variables)]
 use crate::prelude::*;
 
 pub struct Player {
@@ -22,7 +21,7 @@ impl Player {
           VirtualKeyCode::Down => Point::new(0, 1),
             _ => Point::zero()
         };
-println!("{:#?}", delta);
+        
         let new_position = self.position + delta;
         if map.can_enter_tile(new_position) {
             self.position = new_position;
