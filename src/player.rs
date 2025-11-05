@@ -1,10 +1,12 @@
+#![allow(dead_code, unused_variables)]
 use crate::prelude::*;
 
-pub struct Player {
+// Used plural since there is a conflict between Player from my crate and another.
+pub struct Players {
     pub position: Point,
 }
 
-impl Player {
+impl Players {
     pub fn new(position: Point) -> Self {
         Self { position }
     }
