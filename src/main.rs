@@ -25,6 +25,8 @@ mod prelude {
     pub const DISPLAY_HEIGHT: i32 = SCREEN_HEIGHT / 2;
 }
 
+use std::process;
+
 use legion::systems::Resource;
 use prelude::*;
 
@@ -43,6 +45,7 @@ impl State {
         let mut rand = RandomNumberGenerator::new();
         let map_builder = MapBuilder::new(&mut rand);
         spawn_player(&mut ecs, map_builder.player_start);
+        spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
         map_builder
             .rooms
             .iter()
@@ -62,6 +65,84 @@ impl State {
             monster_system: build_monster_scheduler(),
         }
     }
+
+    fn game_over(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(3);
+        ctx.print_color_centered(18, RED, BLACK, "Your quest has ended");
+        ctx.print_color_centered(
+            20,
+            WHITE,
+            BLACK,
+            "Slain by a monster, your hero's journey has come to a premature end",
+        );
+        ctx.print_color_centered(
+            21,
+            WHITE,
+            BLACK,
+            "The Amulet of Yala remains unclaimed, and your home town is not saved.",
+        );
+        ctx.print_color_centered(
+            25,
+            YELLOW,
+            BLACK,
+            "Don't worry, you can always try again with a new hero.",
+        );
+
+        ctx.print_color_centered(27, GREEN, BLACK, "Press 1 to play again.");
+        ctx.print_color_centered(29, GREEN, BLACK, "Press 2 to exit.");
+
+        if let Some(VirtualKeyCode::Key1) = ctx.key {
+            self.reset_game_state();
+        }
+
+        if let Some(VirtualKeyCode::Key2) = ctx.key {
+            std::process::exit(0);
+        }
+    }
+
+    fn victory(&mut self, ctx: &mut BTerm) {
+        ctx.set_active_console(2);
+        ctx.print_color_centered(18, GREEN, BLACK, "You have won!");
+        ctx.print_color_centered(
+            20,
+            WHITE,
+            BLACK,
+            "You put on the Amulet of Yala and feel its power course through your veins...",
+        );
+        ctx.print_color_centered(
+            21,
+            WHITE,
+            BLACK,
+            "Your town is saved, and you can return to your normal life.",
+        );
+        ctx.print_color_centered(27, GREEN, BLACK, "Press 1 to play again..");
+        ctx.print_color_centered(28, GREEN, BLACK, "Press 2 to exit..");
+
+        if let Some(VirtualKeyCode::Key1) = ctx.key {
+            self.reset_game_state();
+        }
+        if let Some(VirtualKeyCode::Key2) = ctx.key {
+            process::exit(0);
+        }
+    }
+
+    fn reset_game_state(&mut self) {
+        self.ecs = World::default();
+        self.resources = Resources::default();
+        let mut rand = RandomNumberGenerator::new();
+        let map_builder = MapBuilder::new(&mut rand);
+        spawn_player(&mut self.ecs, map_builder.player_start);
+        spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        map_builder
+            .rooms
+            .iter()
+            .skip(1)
+            .map(|r| r.center())
+            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rand, pos));
+        self.resources.insert(map_builder.map);
+        self.resources.insert(Camera::new(map_builder.player_start));
+        self.resources.insert(TurnState::AwaitingInput);
+    }
 }
 
 impl GameState for State {
@@ -72,10 +153,12 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(2);
         ctx.cls();
+        ctx.set_active_console(3);
+        ctx.cls();
         self.resources.insert(ctx.key);
         ctx.set_active_console(0);
         self.resources.insert(Point::from_tuple(ctx.mouse_pos()));
-        
+
         let current_state = self.resources.get::<TurnState>().unwrap().clone();
 
         match current_state {
@@ -88,6 +171,12 @@ impl GameState for State {
             TurnState::MonsterTurn => self
                 .monster_system
                 .execute(&mut self.ecs, &mut self.resources),
+            TurnState::GameOver => {
+                self.game_over(ctx);
+            }
+            TurnState::Victory => {
+                self.victory(ctx);
+            }
         }
 
         render_draw_buffer(ctx).expect("Render error");
@@ -105,7 +194,8 @@ fn main() -> BError {
         .with_font("terminal8x8.png", 8, 8)
         .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
-        .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_simple_console_no_bg(DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, "terminal8x8.png")
+        .with_sparse_console_no_bg(DISPLAY_WIDTH * 2, DISPLAY_HEIGHT * 2, "terminal8x8.png")
         .build()?;
 
     main_loop(context, State::new())

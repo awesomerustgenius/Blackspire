@@ -8,6 +8,7 @@ mod end_turn;
 mod movement;
 mod hud;
 mod tooltip;
+mod chasing;
 mod combat;
 
 pub fn build_input_scheduler() -> Schedule {
@@ -37,6 +38,7 @@ pub fn build_player_scheduler() -> Schedule {
 pub fn build_monster_scheduler() -> Schedule {
     Schedule::builder()
         .add_system(random_move::random_move_system())
+        .add_system(chasing::chasing_system())
         .flush()
         .add_system(combat::combat_system())
         .flush()
