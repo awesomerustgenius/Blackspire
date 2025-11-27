@@ -7,7 +7,6 @@ mod player;
 mod spawner;
 mod systems;
 mod turn_state;
-
 mod prelude {
     pub use bracket_lib::prelude::*;
     pub use legion::*;
@@ -46,6 +45,10 @@ impl State {
         let map_builder = MapBuilder::new(&mut rand);
         spawn_player(&mut ecs, map_builder.player_start);
         spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
+        map_builder
+            .monster_spawns
+            .iter()
+            .for_each(|pos| spawn_monster(&mut ecs, &mut rand, *pos));
         map_builder
             .rooms
             .iter()
@@ -133,6 +136,11 @@ impl State {
         let map_builder = MapBuilder::new(&mut rand);
         spawn_player(&mut self.ecs, map_builder.player_start);
         spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
+        map_builder
+            .monster_spawns
+            .iter()
+            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rand, *pos));
+
         map_builder
             .rooms
             .iter()
