@@ -14,6 +14,7 @@ impl MapArchitect for DrunkArchitect {
             player_start: Point::zero(),
             amulet_start: Point::zero(),
             rooms: Vec::new(),
+            themes: super::themes::DungeonTheme::new(),
         };
         let center = Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
