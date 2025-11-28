@@ -48,13 +48,13 @@ impl State {
         map_builder
             .monster_spawns
             .iter()
-            .for_each(|pos| spawn_monster(&mut ecs, &mut rand, *pos));
+            .for_each(|pos| spawn_entity(&mut ecs, &mut rand, *pos));
         map_builder
             .rooms
             .iter()
             .skip(1)
             .map(|r| r.center())
-            .for_each(|pos| spawn_monster(&mut ecs, &mut rand, pos));
+            .for_each(|pos| spawn_entity(&mut ecs, &mut rand, pos));
 
         resources.insert(map_builder.map);
         resources.insert(Camera::new(map_builder.player_start));
@@ -140,14 +140,14 @@ impl State {
         map_builder
             .monster_spawns
             .iter()
-            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rand, *pos));
+            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rand, *pos));
 
         map_builder
             .rooms
             .iter()
             .skip(1)
             .map(|r| r.center())
-            .for_each(|pos| spawn_monster(&mut self.ecs, &mut rand, pos));
+            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rand, pos));
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));
         self.resources.insert(TurnState::AwaitingInput);
