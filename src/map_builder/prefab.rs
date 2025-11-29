@@ -1,6 +1,6 @@
 use crate::prelude::*;
 const FORTRESS: (&str, i32, i32) = (
-    " ------------
+    "------------
     ---######--- 
     ---#----#--- 
     ---#-M--#---
@@ -10,7 +10,7 @@ const FORTRESS: (&str, i32, i32) = (
     ---#----#---
     ---#----#---
     ---######---
-    ------------ ",
+    ------------",
     12,
     11,
 );
@@ -77,7 +77,7 @@ pub fn apply_prefab(mb: &mut MapBuilder, rng: &mut RandomNumberGenerator) {
                     '#' => {
                         mb.map.tiles[idx] = TileType::Wall;
                     }
-                    _ => println!("No idea what to do with this: [{}]", c),
+                    _ => println!("No idea what to do with {}", c),
                 }
                 i += 1;
             }

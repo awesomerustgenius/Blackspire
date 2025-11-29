@@ -18,6 +18,11 @@ pub fn hud(ecs: &SubWorld) {
 
     let mut item_query = <(&Item, &Name, &Carried)>::query();
 
+    let (player, map_level) = <(Entity, &Player)>::query()
+        .iter(ecs)
+        .find_map(|(entity, player)| Some((*entity, player.map_level)))
+        .unwrap();
+
     if let Some(player_health) = health_query.iter(ecs).nth(0) {
         let mut draw_batch = DrawBatch::new();
         draw_batch.target(2);
@@ -47,7 +52,7 @@ pub fn hud(ecs: &SubWorld) {
         );
 
         let mut y = 3;
-        
+
         item_query
             .iter(ecs)
             .filter(|(_, _, carried)| carried.0 == player)
@@ -63,6 +68,11 @@ pub fn hud(ecs: &SubWorld) {
                 ColorPair::new(YELLOW, BLACK),
             );
         }
+        draw_batch.print_color_right(
+            Point::new(SCREEN_WIDTH * 2, 1),
+            format!("Dungeon level: {}", map_level + 1),
+            ColorPair::new(YELLOW, BLACK),
+        );
         draw_batch.submit(10000).expect("Batch error");
     }
 }

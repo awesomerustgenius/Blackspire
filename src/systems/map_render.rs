@@ -39,6 +39,9 @@ pub fn map_render(
                     TileType::Floor => {
                         draw_batch.set(pt - offset, ColorPair::new(tint, BLACK), glyph)
                     }
+                    TileType::Exit => {
+                        todo!()
+                    }
                 };
             };
         }

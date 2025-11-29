@@ -5,7 +5,7 @@ use crate::{
         drunkard::DrunkArchitect,
         prefab::apply_prefab,
         rooms::RoomsArchitect,
-        themes::{CrazyTheme, DungeonTheme, ForestTheme},
+        themes::{ DungeonTheme, ForestTheme},
     },
     prelude::*,
 };
