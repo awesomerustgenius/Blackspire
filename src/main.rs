@@ -161,7 +161,7 @@ impl State {
 
     fn advanced_level(&mut self) {
         // 1. Remove all entities from the ECS World that aren’t either the player or items carried by the player
-        let player = *<(Entity)>::query()
+        let player = *<Entity>::query()
             .filter(component::<Player>())
             .iter(&mut self.ecs)
             .nth(0)
@@ -185,7 +185,7 @@ impl State {
             }
         }
         cb.flush(&mut self.ecs, &mut self.resources);
-        <(&mut FieldOfView)>::query()
+        <&mut FieldOfView>::query()
             .iter_mut(&mut self.ecs)
             .for_each(|fov| fov.is_dirty = true);
 
@@ -209,7 +209,7 @@ impl State {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
-        
+
         // 5. Finish setting up spawned monsters and resources as you did before
         map_builder
             .monster_spawns
