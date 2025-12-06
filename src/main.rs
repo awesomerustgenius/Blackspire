@@ -48,16 +48,20 @@ impl State {
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
 
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut ecs, &mut rand, *pos));
-        map_builder
-            .rooms
-            .iter()
-            .skip(1)
-            .map(|r| r.center())
-            .for_each(|pos| spawn_entity(&mut ecs, &mut rand, pos));
+        spawn_level(
+            &mut ecs,
+            &mut rand,
+            0,
+            &map_builder.monster_spawns,
+            &mut resources,
+        );
+        spawn_level(
+            &mut ecs,
+            &mut rand,
+            0,
+            &map_builder.monster_spawns,
+            &mut resources,
+        );
 
         resources.insert(map_builder.map);
         resources.insert(Camera::new(map_builder.player_start));
@@ -142,17 +146,23 @@ impl State {
         // spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rand, *pos));
 
-        map_builder
-            .rooms
-            .iter()
-            .skip(1)
-            .map(|r| r.center())
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rand, pos));
+        spawn_level(
+            &mut self.ecs,
+            &mut rand,
+            0,
+            &map_builder.monster_spawns,
+            &mut self.resources,
+        );
+
+        spawn_level(
+            &mut self.ecs,
+            &mut rand,
+            0,
+            &map_builder.monster_spawns,
+            &mut self.resources,
+        );
+
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));
         self.resources.insert(TurnState::AwaitingInput);
@@ -211,10 +221,13 @@ impl State {
         }
 
         // 5. Finish setting up spawned monsters and resources as you did before
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rng, *pos));
+        spawn_level(
+            &mut self.ecs,
+            &mut rng,
+            map_level as usize,
+            &map_builder.monster_spawns,
+            &mut self.resources,
+        );
 
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));

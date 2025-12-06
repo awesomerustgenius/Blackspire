@@ -91,3 +91,9 @@ pub struct ActivateItem {
     pub used_by: Entity,
     pub item: Entity,
 }
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Damage(pub i32);
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Weapon;
