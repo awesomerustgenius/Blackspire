@@ -22,41 +22,41 @@ impl Map {
             revealed_tiles: vec![false; NUM_TILES],
         }
     }
-    pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
-        ctx.set_active_console(0);
-        // Render the map based on camera position.
-        for y in camera.top_y..camera.bottom_y {
-            for x in camera.left_x..camera.right_x {
-                if self.in_bound(Point::new(x, y)) {
-                    let idx = map_idx(x, y);
-                    match self.tiles[idx] {
-                        TileType::Floor => {
-                            ctx.set(
-                                x - camera.left_x,
-                                y - camera.top_y,
-                                WHITE,
-                                BLACK,
-                                to_cp437('.'),
-                            );
-                        }
-                        TileType::Wall => {
-                            ctx.set(
-                                x - camera.left_x,
-                                y - camera.top_y,
-                                WHITE,
-                                BLACK,
-                                to_cp437('#'),
-                            );
-                        }
-                        TileType::Exit => {
-                            todo!()
-                        }
-                    };
-                }
-            }
-        }
-    }
-
+    /* pub fn render(&self, ctx: &mut BTerm, camera: &Camera) {
+           ctx.set_active_console(0);
+           // Render the map based on camera position.
+           for y in camera.top_y..camera.bottom_y {
+               for x in camera.left_x..camera.right_x {
+                   if self.in_bound(Point::new(x, y)) {
+                       let idx = map_idx(x, y);
+                       match self.tiles[idx] {
+                           TileType::Floor => {
+                               ctx.set(
+                                   x - camera.left_x,
+                                   y - camera.top_y,
+                                   WHITE,
+                                   BLACK,
+                                   to_cp437('.'),
+                               );
+                           }
+                           TileType::Wall => {
+                               ctx.set(
+                                   x - camera.left_x,
+                                   y - camera.top_y,
+                                   WHITE,
+                                   BLACK,
+                                   to_cp437('#'),
+                               );
+                           }
+                           TileType::Exit => {
+                               todo!()
+                           }
+                       };
+                   }
+               }
+           }
+       }
+    */
     pub fn in_bound(&self, point: Point) -> bool {
         point.x >= 0 && point.x < SCREEN_WIDTH && point.y >= 0 && point.y < SCREEN_HEIGHT
     }
