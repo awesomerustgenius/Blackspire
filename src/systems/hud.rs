@@ -27,21 +27,16 @@ pub fn hud(ecs: &SubWorld) {
         let mut draw_batch = DrawBatch::new();
         draw_batch.target(2);
 
-        draw_batch.print_color_centered(
-            2,
-            format!(
-                "Explore the Dungeon. Cursor keys to move. | Health: {} / {}",
-                player_health.current, player_health.max
-            ),
-            ColorPair::new(WHITE, BLACK),
-        );
+        // Top bar: Health bar at y=0
         draw_batch.bar_horizontal(
-            Point::zero(),
+            Point::new(0, 0),
             SCREEN_WIDTH,
             player_health.current,
             player_health.max,
             ColorPair::new(RED, BLACK),
         );
+        
+        // Health text overlay on the bar (centered)
         draw_batch.print_color_centered(
             0,
             format!(
@@ -51,28 +46,48 @@ pub fn hud(ecs: &SubWorld) {
             ColorPair::new(WHITE, RED),
         );
 
-        let mut y = 3;
+        // Dungeon level in top right corner
+        draw_batch.print_color_right(
+            Point::new(SCREEN_WIDTH - 1, 0),
+            format!("Level {}", map_level + 1),
+            ColorPair::new(YELLOW, BLACK),
+        );
 
+        // Instructions/controls at y=1 (below health bar)
+        draw_batch.print_color(
+            Point::new(1, 1),
+            "Arrow keys: Move | G: Pick up | 0-9: Use item",
+            ColorPair::new(CYAN, BLACK),
+        );
+
+        // Inventory section on the left side starting at y=3
+        let mut item_count = 0;
+        let inventory_start_y = 3;
+        let max_items_display = 8; // Limit items to prevent overlap with game area
+        
         item_query
             .iter(ecs)
             .filter(|(_, _, carried)| carried.0 == player)
+            .take(max_items_display)
             .for_each(|(_, name, _)| {
-                draw_batch.print(Point::new(3, y), format!("{} : {}", y - 2, name.0));
-                y += 1;
+                let y_pos = inventory_start_y + item_count;
+                draw_batch.print_color(
+                    Point::new(1, y_pos),
+                    format!("[{}] {}", item_count, name.0),
+                    ColorPair::new(GREEN, BLACK),
+                );
+                item_count += 1;
             });
 
-        if y > 3 {
+        // Inventory header (only show if there are items)
+        if item_count > 0 {
             draw_batch.print_color(
-                Point::new(3, 2),
-                "Item carried ",
+                Point::new(1, inventory_start_y - 1),
+                format!("Inventory ({}):", item_count),
                 ColorPair::new(YELLOW, BLACK),
             );
         }
-        draw_batch.print_color_right(
-            Point::new(SCREEN_WIDTH * 2, 1),
-            format!("Dungeon level: {}", map_level + 1),
-            ColorPair::new(YELLOW, BLACK),
-        );
+
         draw_batch.submit(10000).expect("Batch error");
     }
 }
