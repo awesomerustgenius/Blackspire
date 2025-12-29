@@ -1,6 +1,6 @@
-# Dungeon Crawler
+# Blackspire
 
-A classic roguelike dungeon crawler game built with Rust, featuring procedurally generated dungeons, turn-based combat, and an Entity Component System (ECS) architecture. Navigate through dangerous levels, battle monsters, collect items, and retrieve the legendary Amulet of Yala to save your hometown!
+A classic roguelike blackspire game built with Rust, featuring procedurally generated dungeons, turn-based combat, and an Entity Component System (ECS) architecture. Navigate through dangerous levels, battle monsters, collect items, and retrieve the legendary Amulet of Yala to save your hometown!
 
 ## 🎮 Features
 
@@ -55,14 +55,14 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/dungeon_crawler.git
-   cd dungeon_crawler/dungeon-dragons
+   git clone https://github.com/yourusername/blackspire.git
+   cd blackspire/blackspire
    ```
 
 2. **Verify the project structure**
    Ensure you have the following structure:
    ```
-   dungeon-dragons/
+   blackspire/
    ├── Cargo.toml
    ├── src/
    │   ├── main.rs
@@ -83,7 +83,7 @@ Build the project in debug mode (faster compilation, slower runtime):
 cargo build
 ```
 
-The executable will be located at: `target/debug/dungeon_crawler.exe` (Windows) or `target/debug/dungeon_crawler` (Linux/macOS)
+The executable will be located at: `target/debug/blackspire.exe` (Windows) or `target/debug/blackspire` (Linux/macOS)
 
 ### Release Build
 
@@ -93,7 +93,7 @@ Build an optimized release version (slower compilation, faster runtime):
 cargo build --release
 ```
 
-The optimized executable will be located at: `target/release/dungeon_crawler.exe` (Windows) or `target/release/dungeon_crawler` (Linux/macOS)
+The optimized executable will be located at: `target/release/blackspire.exe` (Windows) or `target/release/blackspire` (Linux/macOS)
 
 **Note**: The release build uses Link-Time Optimization (LTO) for maximum performance.
 
@@ -103,14 +103,6 @@ Check if the code compiles without building:
 
 ```bash
 cargo check
-```
-
-### Run Tests
-
-Run the test suite (if tests are available):
-
-```bash
-cargo test
 ```
 
 ## ▶️ Running the Game
@@ -135,15 +127,16 @@ After building, you can run the executable directly:
 
 **Windows:**
 ```bash
-.\target\release\dungeon_crawler.exe
+.\target\release\blackspire.exe
 ```
 
 **Linux/macOS:**
 ```bash
-./target/release/dungeon_crawler
+./target/release/blackspire
 ```
 
-**Important**: Make sure you run the executable from the `dungeon-dragons` directory, as the game expects the `resources/` folder to be in the current working directory.
+**Important**: Make sure you run the executable from the `blackspire` directory, as the game expects the `resources/` folder to be in the current working directory.
+You can also copy the executable to a different folder but ensure you also copy the resources folder into the folder that contains your executable.
 
 ## 🎯 How to Play
 
@@ -327,17 +320,6 @@ This project adheres to a code of conduct that all contributors are expected to 
 ## 📄 License
 
 This project is currently unlicensed. If you'd like to use this code, please contact the author or consider adding a license file.
-
-**Recommended licenses for open-source games:**
-- **MIT**: Permissive, allows commercial use, simple and widely used
-- **Apache 2.0**: Permissive with patent grant, good for collaborative projects
-- **GPL v3**: Copyleft, requires derivative works to be open source
-- **CC0**: Public domain dedication, maximum freedom for users
-
-To add a license, you can:
-1. Choose a license from [choosealicense.com](https://choosealicense.com/)
-2. Create a `LICENSE` file in the repository root
-3. Update this section with your chosen license
 
 ## 🙏 Acknowledgments
 
