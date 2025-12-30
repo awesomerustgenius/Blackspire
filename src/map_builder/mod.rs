@@ -5,7 +5,7 @@ use crate::{
         drunkard::DrunkArchitect,
         prefab::apply_prefab,
         rooms::RoomsArchitect,
-        themes::{ DungeonTheme, ForestTheme},
+        themes::{DungeonTheme, ForestTheme, CaveTheme, DesertTheme, IceTheme, CryptTheme, SwampTheme, LavaTheme},
     },
     prelude::*,
 };
@@ -47,10 +47,15 @@ impl MapBuilder {
         let mut mb = architect.new(rand);
         apply_prefab(&mut mb, rand);
 
-        mb.themes = match rand.range(0, 3) {
+        mb.themes = match rand.range(0, 8) {
             0 => DungeonTheme::new(),
-            _ => ForestTheme::new(),
-            // _ => CrazyTheme::new(),
+            1 => ForestTheme::new(),
+            2 => CaveTheme::new(),
+            3 => DesertTheme::new(),
+            4 => IceTheme::new(),
+            5 => CryptTheme::new(),
+            6 => SwampTheme::new(),
+            _ => LavaTheme::new(),
         };
 
         mb
