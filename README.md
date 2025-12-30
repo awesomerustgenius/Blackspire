@@ -55,7 +55,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/blackspire.git
+   git clone https://github.com/pragmatic-rustacean/Blackspire.git
    cd blackspire/blackspire
    ```
 
