@@ -10,7 +10,7 @@ A classic roguelike blackspire game built with Rust, featuring procedurally gene
 - **Multiple Enemy Types**: Face off against Goblins, Orcs, Ogres, and Ettins, each with different stats and behaviors
 - **Item System**: Collect and use healing potions, weapons, and magical items
 - **Multiple Levels**: Progress through multiple dungeon levels, each more challenging than the last
-- **Themes**: Different visual themes (Dungeon and Forest) for varied aesthetics
+- **Themes**: Different visual themes (Dungeon, forest, ice, ...) for varied aesthetics
 - **HUD**: Comprehensive heads-up display showing health, inventory, and game information
 - **Tooltips**: Hover over entities to see their names and details
 
@@ -179,7 +179,7 @@ Your goal is to navigate through multiple dungeon levels, defeat monsters, colle
 ## 📁 Project Structure
 
 ```
-dungeon-dragons/
+blackspire/
 ├── Cargo.toml              # Project metadata and dependencies
 ├── Cargo.lock              # Locked dependency versions
 ├── README.md               # This file
